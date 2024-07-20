@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mandelbrot–Lorenz Equation Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; background-color: #f9f9f9; margin: 0; padding: 0; }
+        .quiz-container { max-width: 600px; margin: 50px auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); }
+        .progress-bar { background-color: #e0e0e0; border-radius: 5px; margin-bottom: 20px; }
+        .progress-bar div { background-color: #4a90e2; height: 10px; border-radius: 5px; width: 0%; }
+        .quiz-question { margin-bottom: 20px; }
+        .quiz-question p { font-weight: bold; }
+        .quiz-question label { display: block; padding: 10px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px; cursor: pointer; }
+        .quiz-question input { display: none; }
+        .quiz-question input:checked + label { background-color: #e6f7ff; border-color: #4a90e2; }
+        button { display: block; width: 100%; padding: 10px; background-color: #4a90e2; color: #fff; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+        button:hover { background-color: #357ab7; }
+        .quiz-result { display: none; }
+        .quiz-result p { font-weight: bold; font-size: 18px; }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="progress-bar"><div></div></div>
+        <form id="quizForm">
+            <div class="quiz-question" data-question="1">
+                <p>1. What does "S" stand for in the equation?</p>
+                <input type="radio" id="q1a1" name="q1" value="Opportunity Size">
+                <label for="q1a1">Opportunity Size</label>
+                <input type="radio" id="q1a2" name="q1" value="Potential Impact">
+                <label for="q1a2">Potential Impact</label>
+                <input type="radio" id="q1a3" name="q1" value="Difficulty of Execution">
+                <label for="q1a3">Difficulty of Execution</label>
+                <input type="radio" id="q1a4" name="q1" value="Challenges in Construction">
+                <label for="q1a4">Challenges in Construction</label>
+            </div>
+            <div class="quiz-question" data-question="2">
+                <p>2. What does "w_P" represent?</p>
+                <input type="radio" id="q2a1" name="q2" value="Weight for Opportunity Size">
+                <label for="q2a1">Weight for Opportunity Size</label>
+                <input type="radio" id="q2a2" name="q2" value="Weight for Potential Impact Size">
+                <label for="q2a2">Weight for Potential Impact Size</label>
+                <input type="radio" id="q2a3" name="q2" value="Weight for Difficulty of Execution">
+                <label for="q2a3">Weight for Difficulty of Execution</label>
+                <input type="radio" id="q2a4" name="q2" value="Weight for Challenges">
+                <label for="q2a4">Weight for Challenges</label>
+            </div>
+            <div class="quiz-question" data-question="3">
+                <p>3. What is the goal of using the Mandelbrot–Lorenz Equation?</p>
+                <input type="radio" id="q3a1" name="q3" value="To make better business decisions">
+                <label for="q3a1">To make better business decisions</label>
+                <input type="radio" id="q3a2" name="q3" value="To solve math problems">
+                <label for="q3a2">To solve math problems</label>
+                <input type="radio" id="q3a3" name="q3" value="To study weather patterns">
+                <label for="q3a3">To study weather patterns</label>
+                <input type="radio" id="q3a4" name="q3" value="To find hidden treasures">
+                <label for="q3a4">To find hidden treasures</label>
+            </div>
+            <button type="button" onclick="checkAnswers()">Submit</button>
+        </form>
+        <div class="quiz-result" id="quizResult"></div>
+    </div>
+
+    <script>
+        const answers = {
+            q1: "Opportunity Size",
+            q2: "Weight for Potential Impact Size",
+            q3: "To make better business decisions"
+        };
+
+        function checkAnswers() {
+            let score = 0;
+            const form = document.getElementById('quizForm');
+            const formData = new FormData(form);
+
+            for (let [question, answer] of Object.entries(answers)) {
+                if (formData.get(question) === answer) {
+                    score++;
+                }
+            }
+
+            const resultDiv = document.getElementById('quizResult');
+            resultDiv.innerHTML = `<p>Your score: ${score} / 3</p>`;
+            resultDiv.style.display = 'block';
+
+            document.querySelector('.progress-bar div').style.width = '100%';
+        }
+
+        const quizQuestions = document.querySelectorAll('.quiz-question');
+        quizQuestions.forEach((question, index) => {
+            question.addEventListener('change', () => {
+                const nextQuestion = quizQuestions[index + 1];
+                if (nextQuestion) {
+                    nextQuestion.scrollIntoView({ behavior: 'smooth' });
+                    document.querySelector('.progress-bar div').style.width = `${((index + 1) / quizQuestions.length) * 100}%`;
+                }
+            });
+        });
+    </script>
+</body>
+</html>
